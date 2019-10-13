@@ -12,14 +12,29 @@ router.get("/profile", function(req, req, next) {
   res.send('qweuqwueqw');
 });
 router.post("/register", async (req, res) => {
-  console.log("queocute",req.body.password);
-  const email = '123@gmail.com';
+  const email = req.body.email
+  const password = req.body.password
   const user = await userModel.get(email);
+  const json = {"returncode":0,"returnmessage":""};
   console.log(user);
   if (user) {
-    res.send("tk da ton tai");
+    json["returnmessage"] = "Tai khoan da ton tai";
   }
-  //await userModel.register(email,email);
-  res.send(email);
+  else
+  {
+    let result = await userModel.register(email,password);
+    if(result)
+    {
+      json["returncode"] = 1
+      json["returnmessage"] = "Dang ki thanh cong";
+
+    }
+    else
+    {
+      json["returnmessage"] = "Dang ki that bai";
+    }
+  }
+  res.send(json);
+  
 });
 module.exports = router;
