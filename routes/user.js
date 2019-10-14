@@ -8,8 +8,8 @@ router.post("/login", (req, res, next) => {
   passport.authenticate('login', (err, user, info) => {
     if (err || !user) {
       return res.status(400).json({
-        message: info ? info.message : err,
-        user: user
+        returncode:0,
+        returnmessage: info ? info.message : err,
       });
     } else {
       req.logIn(user, err => {
@@ -19,9 +19,9 @@ router.post("/login", (req, res, next) => {
 
         const token = jwt.sign({ id: user.email }, "jwt-secret");
         return res.status(200).json({
-          auth: true,
+          returncode:1,
+          returnmessage: "Logged in successfully!",
           token: token,
-          message: "Logged in successfully!"
         });
       });
     }
@@ -37,7 +37,7 @@ router.post("/register", async (req, res) => {
   const password = req.body.password;
   const user = await userModel.get(email);
   const json = { returncode: 0, returnmessage: "" };
-  console.log(user);
+  let stt= 400;
   if (user) {
     json["returnmessage"] = "Tai khoan da ton tai";
   } else {
@@ -45,10 +45,11 @@ router.post("/register", async (req, res) => {
     if (result) {
       json["returncode"] = 1;
       json["returnmessage"] = "Dang ki thanh cong";
+      stt = 200;
     } else {
       json["returnmessage"] = "Dang ki that bai";
     }
   }
-  res.send(json);
+  res.status(stt).send(json);
 });
 module.exports = router;

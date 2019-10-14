@@ -22,6 +22,6 @@ exports.register = async (email, password) => {
     isActivated: false
   });
 };
-exports.validJwtPayloadId = async id => {
+exports.validJwtPayloadId = async (id) => {
   return await db.records.collection(USERS).findOne({ email: id });
 };

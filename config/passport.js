@@ -18,7 +18,6 @@ passport.use(
     async (email, password, done) => {
       try {
         const user = await userModel.vailidPassWord(email, password);
-        console.log("is passs ---", user);
         if (user) {
           return done(null, user);
         }
@@ -43,17 +42,14 @@ passport.use(
     async (jwt_payload, done) => {
       console.log("here----------", jwt_payload.id);
       try {
-        const isJwtPayloadIdValid = await userModel.validJwtPayloadId(
-          jwt_payload.id
-        );
-        console.log("is jwt payload id ---", isJwtPayloadIdValid);
-        if (!isJwtPayloadIdValid) {
-          return done(null, false, {
-            message: "not found"
-          });
+        const user = await userModel.validJwtPayloadId(jwt_payload.id);
+        if (user) {
+          console.log("founded");
+          return done(null, user);
         }
-        console.log("founded");
-        return done(null, user);
+        return done(null, false, {
+          message: "not found"
+        });
       } catch (ex) {
         console.log("jwt ex erorrrrrrrrr ------", ex);
         return done(ex);
