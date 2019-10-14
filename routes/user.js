@@ -5,11 +5,11 @@ const jwt = require("jsonwebtoken");
 const passport = require("passport");
 // POST LOGIN
 router.post("/login", (req, res, next) => {
-  passport.authenticate('login', (err, user, info) => {
+  passport.authenticate("login", (err, user, info) => {
     if (err || !user) {
       return res.status(400).json({
-        returncode:0,
-        returnmessage: info ? info.message : err,
+        returncode: 0,
+        returnmessage: info ? info.message : err
       });
     } else {
       req.logIn(user, err => {
@@ -19,16 +19,16 @@ router.post("/login", (req, res, next) => {
 
         const token = jwt.sign({ id: user.email }, "jwt-secret");
         return res.status(200).json({
-          returncode:1,
+          returncode: 1,
           returnmessage: "Logged in successfully!",
-          token: token,
+          token: token
         });
       });
     }
-  })(req, res,next);
+  })(req, res, next);
 });
 /* GET users listing. */
-router.get("/", function(req, res, next) {
+router.get("/", function(req, res) {
   res.send("respond with a resource");
 });
 
@@ -37,7 +37,7 @@ router.post("/register", async (req, res) => {
   const password = req.body.password;
   const user = await userModel.get(email);
   const json = { returncode: 0, returnmessage: "" };
-  let stt= 400;
+  let stt = 400;
   if (user) {
     json["returnmessage"] = "Tai khoan da ton tai";
   } else {
