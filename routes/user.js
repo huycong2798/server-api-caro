@@ -39,15 +39,15 @@ router.post("/register", async (req, res) => {
   const json = { returncode: 0, returnmessage: "" };
   let stt = 400;
   if (user) {
-    json["returnmessage"] = "Tai khoan da ton tai";
+    json["returnmessage"] = "Email is already taken. Please try another";
   } else {
     let result = await userModel.register(email, password);
     if (result) {
       json["returncode"] = 1;
-      json["returnmessage"] = "Dang ki thanh cong";
+      json["returnmessage"] = "Register successfully";
       stt = 200;
     } else {
-      json["returnmessage"] = "Dang ki that bai";
+      json["returnmessage"] = "Register failed";
     }
   }
   res.status(stt).send(json);
