@@ -8,9 +8,9 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/user');
 const profileRouter = require('./routes/profile');
-
+const cors = require('cors');
 var app = express();
-
+app.use(cors());
 require('./config/passport')(app);
 app.set('view engine', 'hbs');
 app.set('views',__dirname + '/views');
