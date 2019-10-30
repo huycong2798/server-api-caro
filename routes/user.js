@@ -52,4 +52,34 @@ router.post("/register", async (req, res) => {
   }
   res.status(stt).send(json);
 });
+router.put("/edit", (req, res, next) => {
+  passport.authenticate("jwt", { session: false }, async (err, user, info) => {
+    if (err || !user) {
+      return res.status(400).json({
+        returncode: 0,
+        returnmessage: info ? info.message : err
+      });
+    } else {
+      const info = req.body;
+      const isUpdated = await userModel.editInfo(user.email, info);
+
+      if (isUpdated) {
+        const newUser = await userModel.get(user.email);
+        if (newUser) {
+          return res.status(200).json({
+            returncode: 1,
+            returnmessage: "updated successfully",
+            newUser: newUser
+          });
+        }
+      } else {
+        return res.status(500).json({
+          returncode: 0,
+          returnmessage: "failed to update",
+          user: user
+        });
+      }
+    }
+  })(req, res, next);
+});
 module.exports = router;

@@ -16,12 +16,15 @@ exports.register = async (email, password) => {
   return await db.records.collection(USERS).insertOne({
     email,
     password: hash,
-    name: "",
+    name: "Noname",
     p_number: "",
-    address: "",
-    isActivated: false
   });
 };
 exports.validJwtPayloadId = async (id) => {
   return await db.records.collection(USERS).findOne({ email: id });
+};
+exports.editInfo = async (email, info) => {
+  return await db.records
+    .collection(USERS)
+    .updateOne({ email: email }, { $set: { name: info.name,p_number: info.p_number } });
 };

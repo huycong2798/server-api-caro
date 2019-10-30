@@ -10,7 +10,6 @@ router.get("/", (req, res, next) => {
         user: user
       });
     } else {
-      console.log("founded");
       
       return res.status(200).json({
         returncode: 1,
