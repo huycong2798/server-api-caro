@@ -18,6 +18,7 @@ exports.register = async (email, password) => {
     password: hash,
     name: "Noname",
     p_number: "",
+    urlAvatar: "https://firebasestorage.googleapis.com/v0/b/caro-react-redux.appspot.com/o/default-avatar.jpg?alt=media&token=744e536e-d2a9-4b72-8bf2-e10c55819922"
   });
 };
 exports.validJwtPayloadId = async (id) => {
@@ -26,5 +27,5 @@ exports.validJwtPayloadId = async (id) => {
 exports.editInfo = async (email, info) => {
   return await db.records
     .collection(USERS)
-    .updateOne({ email: email }, { $set: { name: info.name,p_number: info.p_number } });
+    .updateOne({ email: email }, { $set: {urlAvatar:info.urlAvatar, name: info.name,p_number: info.p_number } });
 };
