@@ -1,5 +1,6 @@
-/* eslint-disable no-undef */
-//!/usr/bin/env node
+
+    
+//#!/usr/bin/env node
 
 /**
  * Module dependencies.
@@ -9,11 +10,12 @@ var app = require("../app");
 var debug = require("debug")("server-api-caro:server");
 var http = require("http");
 const { initdb } = require("../db");
+const socketio = require('socket.io');
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || "3000");
+var port = normalizePort(process.env.PORT || "8000");
 initdb()
   .then(() => {
     /**
@@ -28,6 +30,27 @@ initdb()
 
     server = http.createServer(app);
 
+    const io = socketio(server);
+    
+    io.on('connection',(socket) =>{
+      console.log("socket-id:",socket.id);
+      socket.on('JOIN_ROOM', function(room) {
+        console.log('joining room', room);
+        socket.join(room);
+      });
+
+      socket.on('QUIT_ROOM', function(room) {
+        console.log('leaving room', room);
+        socket.leave(room);
+      });
+
+      socket.on('SEND_MESSAGE', function(data) {
+        io.in(data.room).emit('RECEIVE_MESSAGE', data);
+      });
+
+    })
+
+    app.set('io', io);
     /**
      * Listen on provided port, on all network interfaces.
      */
