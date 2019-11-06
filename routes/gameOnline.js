@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 let userQueue = []
-router.get('/findmatch', (req, res) => {
+router.get('/findroom', (req, res) => {
   try {
     const socketId = req.query.socketId;
     const io = req.app.get('io');
@@ -27,7 +27,7 @@ router.get('/findmatch', (req, res) => {
         console.log('match neee', userQueue);
         user.roomId = idRoom;
       }
-      io.in(user.socketId).emit('FIND_MATCH', user);
+      io.in(user.socketId).emit('FIND_ROOM', user);
       res.end();
   }
   catch(err){

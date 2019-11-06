@@ -45,7 +45,10 @@ initdb()
       });
 
       socket.on('SEND_MESSAGE', function(data) {
-        io.in(data.room).emit('RECEIVE_MESSAGE', data);
+        console.log("data",data);
+        io.in(data.roomId).emit('RECEIVE_MESSAGE', data);
+        //io.emit('RECEIVE_MESSAGE', data);
+
       });
 
     })
