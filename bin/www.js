@@ -14,21 +14,21 @@ const socketio = require('socket.io');
 /**
  * Get port from environment and store in Express.
  */
+var server;
 
-var port = normalizePort(process.env.PORT || "8000");
 initdb()
   .then(() => {
     /**
      * Get port from environment and store in Express.
      */
-
+    var port = normalizePort(process.env.PORT || "3000");
     app.set("port", port);
 
     /**
      * Create HTTP server.
      */
 
-    const server = http.createServer(app);
+    server = http.createServer(app);
 
     const io = socketio(server);
     
