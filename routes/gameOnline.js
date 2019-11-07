@@ -14,7 +14,6 @@ router.get('/findroom', (req, res) => {
       };
       if (userQueue.length > 100) {
         userQueue = [];
-        userQueue = null;
         const err = "sap server"
         return res.status(500).json({ err });
       }
