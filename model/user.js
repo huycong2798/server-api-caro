@@ -25,13 +25,7 @@ exports.validJwtPayloadId = async (id) => {
   return await db.records.collection(USERS).findOne({ email: id });
 };
 exports.editInfo = async (email, info) => {
-  if(info.urlAvatar)
-  {
-    return await db.records
-    .collection(USERS)
-    .updateOne({ email: email }, { $set: {urlAvatar:info.urlAvatar } });
-  }
   return await db.records
     .collection(USERS)
-    .updateOne({ email: email }, { $set: {name: info.name,p_number: info.p_number } });
+    .updateOne({ email: email }, { $set: {name: info.name,p_number: info.p_number,urlAvatar:info.urlAvatar } });
 };
