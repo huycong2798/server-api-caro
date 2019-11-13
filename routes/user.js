@@ -34,14 +34,15 @@ router.get("/", function(req, res) {
 
 router.post("/register", async (req, res) => {
   const email = req.body.email;
-  const password = req.body.password;
-  const user = await userModel.get(email);
+  const user = req.body;
+  console.log("user---",user);
+  const isTaken = await userModel.get(email);
   const json = { returncode: 0, returnmessage: "" };
   let stt = 400;
-  if (user) {
+  if (isTaken) {
     json["returnmessage"] = "Email is already taken. Please try another";
   } else {
-    let result = await userModel.register(email, password);
+    let result = await userModel.register(user);
     if (result) {
       json["returncode"] = 1;
       json["returnmessage"] = "Register successfully";
